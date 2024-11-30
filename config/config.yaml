@@ -1,0 +1,56 @@
+# Model Configuration
+model:
+  name: "facebook/bart-base"
+
+# Generation Configuration
+generation:
+  max_length: 1024
+  min_length: 56
+  length_penalty: 2.0
+  num_beams: 4
+  early_stopping: true
+  no_repeat_ngram_size: 3
+  forced_bos_token_id: 0
+
+# Sentiment Analysis Configuration
+sentiment:
+  model: "ProsusAI/finbert"
+  batch_size: 32
+  max_length: 512
+  return_all_scores: true
+
+# Training Configuration
+training:
+  batch_size: 8
+  learning_rate: 3e-5
+  num_epochs: 3
+  warmup_steps: 500
+  gradient_accumulation_steps: 4
+  max_grad_norm: 1.0
+  mixed_precision: true
+
+# Data Configuration
+data:
+  dataset_name: "cnn_dailymail"
+  dataset_version: "3.0.0"
+  train_size: 0.9
+  val_size: 0.1
+  max_source_length: 1024
+  max_target_length: 142
+
+# Evaluation Configuration
+evaluation:
+  rouge_types: ["rouge1", "rouge2", "rougeL"]
+  batch_size: 16
+
+# Logging Configuration
+logging:
+  wandb_project: "summa_fi"
+  wandb_entity: null  # Set your wandb username
+  log_interval: 100
+
+# Web Interface Configuration
+web:
+  title: "SummaFi - Financial News Summarizer"
+  description: "Enter a financial news article URL to get an AI-powered summary"
+  theme: "default" 
