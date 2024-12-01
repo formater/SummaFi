@@ -3,8 +3,11 @@
 .venv
 test_cuda.py
 wandb/
-outputs/
 .idea/
+outputs/*
+!outputs/final_model/
+outputs/final_model/*
+!outputs/final_model/GET_TRAINED_MODEL.txt
 # Test coverage
 .coverage
 htmlcov/
