@@ -5,3 +5,6 @@ test_cuda.py
 wandb/
 outputs/
 .idea/
+# Test coverage
+.coverage
+htmlcov/

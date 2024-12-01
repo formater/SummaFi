@@ -10,3 +10,5 @@ lxml_html_clean>=0.4.1
 accelerate>=1.1.1
 absl-py>=2.1.0
 rouge_score>=0.1.2
+pytest>=8.3.4
+pytest-cov>=6.0.0

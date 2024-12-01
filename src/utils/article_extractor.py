@@ -90,15 +90,23 @@ class ArticleExtractor:
             url: URL to validate
             
         Returns:
-            bool: True if URL is valid and accessible, False otherwise
-            
-        Note:
-            This method checks both URL format and server response
+            bool: True if URL is valid and well-formed
         """
         try:
-            # Attempt to connect with timeout
-            response = requests.head(url, allow_redirects=True, timeout=5)
-            return response.status_code == 200
+            if not url or not isinstance(url, str):
+                return False
+            
+            # Check URL format
+            parsed_url = urlparse(url)
+            if not all([parsed_url.scheme, parsed_url.netloc]):
+                return False
+            
+            # Check if scheme is http or https
+            if parsed_url.scheme not in ['http', 'https']:
+                return False
+            
+            return True
+            
         except Exception:
             return False
 
