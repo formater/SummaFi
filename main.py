@@ -12,7 +12,7 @@ def setup_args() -> argparse.Namespace:
     parser.add_argument(
         "--mode",
         type=str,
-        choices=["train", "evaluate", "serve"],
+        choices=["train", "evaluate", "serve", "example"],
         default="serve",
         help="Operation mode"
     )
@@ -33,6 +33,12 @@ def setup_args() -> argparse.Namespace:
         default=7860,
         help="Port for web interface"
     )
+    parser.add_argument(
+        "--example-index",
+        type=int,
+        default=None,
+        help="Index of example to show (random if not specified)"
+    )
     
     return parser.parse_args()
 
@@ -46,25 +52,76 @@ def train_model(config_path: Path):
 
 def evaluate_model(config_path: Path, model_path: Path):
     """Handle evaluation mode."""
-    from src.evaluation.evaluator import SummarizerEvaluator
+    import torch
     from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+    from src.evaluation.evaluator import SummarizerEvaluator
     
     logger.info(f"Loading model from checkpoint: {model_path}")
     
-    # Load model and tokenizer from checkpoint
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    try:
+        # Setup device
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        
+        # Load model and tokenizer
+        model = AutoModelForSeq2SeqLM.from_pretrained(
+            model_path,
+            local_files_only=True
+        ).to(device)
+        model.eval()
+        
+        tokenizer = AutoTokenizer.from_pretrained(
+            model_path,
+            local_files_only=True
+        )
+        
+        # Initialize evaluator
+        evaluator = SummarizerEvaluator(config_path, model, tokenizer)
+        
+        # Run evaluation
+        results = evaluator.evaluate()
+        
+        # Log results
+        logger.info("\nEvaluation Results:")
+        for metric, value in results.items():
+            logger.info(f"{metric}: {value:.4f}")
+            
+    except Exception as e:
+        logger.error(f"Error during evaluation: {str(e)}")
+        raise
+
+def show_example(config_path: Path, model_path: Path, index: int = None):
+    """Handle example mode."""
+    import torch
+    from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+    from src.evaluation.evaluator import SummarizerEvaluator
     
-    # Initialize evaluator
-    evaluator = SummarizerEvaluator(config_path, model, tokenizer)
+    logger.info(f"Loading model from checkpoint: {model_path}")
     
-    # Run evaluation
-    results = evaluator.evaluate()
-    
-    # Log results
-    logger.info("Evaluation Results:")
-    for metric, value in results.items():
-        logger.info(f"{metric}: {value:.4f}")
+    try:
+        # Setup device
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        
+        # Load model and tokenizer
+        model = AutoModelForSeq2SeqLM.from_pretrained(
+            model_path,
+            local_files_only=True
+        ).to(device)
+        model.eval()
+        
+        tokenizer = AutoTokenizer.from_pretrained(
+            model_path,
+            local_files_only=True
+        )
+        
+        # Initialize evaluator
+        evaluator = SummarizerEvaluator(config_path, model, tokenizer)
+        
+        # Show example
+        evaluator.show_example(index)
+            
+    except Exception as e:
+        logger.error(f"Error showing example: {str(e)}")
+        raise
 
 def serve_app(config_path: Path, model_path: Path, port: int):
     """Handle serve mode."""
@@ -91,6 +148,11 @@ def main():
             if not args.model_path:
                 raise ValueError("Model path required for evaluation")
             evaluate_model(config_path, Path(args.model_path))
+            
+        elif args.mode == "example":
+            if not args.model_path:
+                raise ValueError("Model path required for showing example")
+            show_example(config_path, Path(args.model_path), args.example_index)
             
         else:  # serve mode
             serve_app(config_path, args.model_path, args.port)
