@@ -144,13 +144,21 @@ class SummarizationDataset:
         # Tokenize inputs and targets in a single call
         model_inputs = self.tokenizer(
             examples["article"],
-            text_target=examples["highlights"],  # Add targets here
+            text_target=examples["highlights"],
             max_length=self.max_source_length,
-            max_length_target=self.max_target_length,  # Specify target length
             padding="max_length",
             truncation=True,
-            return_tensors=None  # Return lists instead of tensors
         )
+
+        # Tokenize targets separately for proper length
+        labels = self.tokenizer(
+            examples["highlights"],
+            max_length=self.max_target_length,
+            padding="max_length",
+            truncation=True,
+        )
+
+        model_inputs["labels"] = labels["input_ids"]
 
         # Replace padding token id in labels with -100
         for i in range(len(model_inputs["labels"])):
