@@ -6,7 +6,6 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 def setup_args() -> argparse.Namespace:
     """Setup command line arguments."""
     parser = argparse.ArgumentParser(description="SummaFi - Financial News Summarizer")
@@ -37,7 +36,6 @@ def setup_args() -> argparse.Namespace:
     
     return parser.parse_args()
 
-
 def train_model(config_path: Path):
     """Handle training mode."""
     from src.training.trainer import SummarizerTrainer
@@ -46,19 +44,27 @@ def train_model(config_path: Path):
     trainer = SummarizerTrainer(config_path)
     trainer.train()
 
-
 def evaluate_model(config_path: Path, model_path: Path):
     """Handle evaluation mode."""
     from src.evaluation.evaluator import SummarizerEvaluator
-    from src.models.summarizer import NewsSummarizer
+    from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
     
-    logger.info("Starting evaluation...")
-    model = NewsSummarizer(config_path)
-    model.load_state_dict(model_path)
+    logger.info(f"Loading model from checkpoint: {model_path}")
     
-    evaluator = SummarizerEvaluator(config_path, model)
-    # Add evaluation logic here
-
+    # Load model and tokenizer from checkpoint
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    
+    # Initialize evaluator
+    evaluator = SummarizerEvaluator(config_path, model, tokenizer)
+    
+    # Run evaluation
+    results = evaluator.evaluate()
+    
+    # Log results
+    logger.info("Evaluation Results:")
+    for metric, value in results.items():
+        logger.info(f"{metric}: {value:.4f}")
 
 def serve_app(config_path: Path, model_path: Path, port: int):
     """Handle serve mode."""
@@ -71,7 +77,6 @@ def serve_app(config_path: Path, model_path: Path, port: int):
         server_port=port,
         share=False
     )
-
 
 def main():
     """Main application entry point."""
@@ -94,6 +99,5 @@ def main():
         logger.error(f"Application error: {str(e)}")
         raise
 
-
 if __name__ == "__main__":
-    main()
+    main() 
