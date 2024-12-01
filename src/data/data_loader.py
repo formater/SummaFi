@@ -9,6 +9,7 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class SummarizationDataset:
     """
     Dataset class for handling CNN/DailyMail summarization data using HuggingFace datasets.
