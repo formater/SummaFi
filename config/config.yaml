@@ -11,6 +11,7 @@ generation:
   early_stopping: true
   no_repeat_ngram_size: 3
   forced_bos_token_id: 0
+  final_model_path: "outputs/final_model"
 
 # Sentiment Analysis Configuration
 sentiment:
