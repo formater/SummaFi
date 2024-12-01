@@ -123,17 +123,27 @@ def show_example(config_path: Path, model_path: Path, index: int = None):
         logger.error(f"Error showing example: {str(e)}")
         raise
 
-def serve_app(config_path: Path, model_path: Path, port: int):
+def serve_app(config_path: Path, model_path: str, port: int):
     """Handle serve mode."""
     from src.web.app import SummaFiWeb
     
-    logger.info("Starting web interface...")
-    app = SummaFiWeb(config_path, model_path)
-    app.launch(
-        server_name="0.0.0.0",
-        server_port=port,
-        share=False
-    )
+    try:
+        # Convert model_path to Path and verify it exists
+        model_path = Path(model_path)
+        if not model_path.exists():
+            raise FileNotFoundError(f"Model checkpoint not found: {model_path}")
+            
+        logger.info("Starting web interface...")
+        app = SummaFiWeb(config_path, model_path)
+        app.launch(
+            server_name="0.0.0.0",
+            server_port=port,
+            share=False
+        )
+        
+    except Exception as e:
+        logger.error(f"Error starting web interface: {str(e)}")
+        raise
 
 def main():
     """Main application entry point."""
@@ -155,7 +165,9 @@ def main():
             show_example(config_path, Path(args.model_path), args.example_index)
             
         else:  # serve mode
-            serve_app(config_path, args.model_path, args.port)
+            if not args.model_path:
+                raise ValueError("Model path required for serving")
+            serve_app(config_path, Path(args.model_path), args.port)
             
     except Exception as e:
         logger.error(f"Application error: {str(e)}")
