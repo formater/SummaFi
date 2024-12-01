@@ -2,3 +2,6 @@
 .cadence
 .venv
 test_cuda.py
+wandb/
+outputs/
+.idea/
