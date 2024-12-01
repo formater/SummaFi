@@ -5,9 +5,9 @@ SummaFi is an advanced financial news summarization system built for my BSc fina
 model fine-tuned on the CNN/DailyMail dataset to provide accurate, concise summaries of financial news articles. The
 summarizer achieves ROUGE scores:
 
-Rouge1: 0.4223
-Rouge2: 0.1935
-RougeL: 0.2889
+- Rouge1: 0.4223
+- Rouge2: 0.1935
+- RougeL: 0.2889
 
 
 ### Core Features
@@ -228,4 +228,3 @@ Tests are automatically run on:
 - Every push to main branch
 - Pull request creation
 - Release tag creation
-```
