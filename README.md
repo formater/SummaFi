@@ -166,19 +166,20 @@ pytest --cov=src tests/  # with coverage
 4. Submit pull request
 
 ## License
-MIT License - See LICENSE file
+MIT License - See [LICENSE](LICENSE) file
 
 ## Acknowledgments
-- Facebook AI Research (BART)(https://huggingface.co/docs/transformers/en/model_doc/bart)
-- HuggingFace Team(https://huggingface.co/)
-- CNN/DailyMail Dataset(https://paperswithcode.com/dataset/cnn-daily-mail-1)
-- Gradio Team(https://www.gradio.app/)
-- FinBERT(https://huggingface.co/ProsusAI/finbert)
+- [Facebook AI Research (BART)](https://huggingface.co/docs/transformers/en/model_doc/bart)
+- [HuggingFace Team](https://huggingface.co/)
+- [CNN/DailyMail Dataset](https://paperswithcode.com/dataset/cnn-daily-mail-1)
+- [Gradio Team](https://www.gradio.app/)
+- [FinBERT](https://huggingface.co/ProsusAI/finbert)
 
 ## Contact
 - Author: Dudás József
-- Email: jozsef.dudas@gmail.com(mailto:jozsef.dudas@gmail.com)
-- GitHub: formater
+- Email: [jozsef.dudas@gmail.com](mailto:jozsef.dudas@gmail.com)
+- GitHub: [formater](https://github.com/formater/)
+- LinkedIn: [https://www.linkedin.com/in/dudasjozsef/](https://www.linkedin.com/in/dudasjozsef/)
 
 ## Testing
 
