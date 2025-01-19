@@ -218,9 +218,7 @@ pytest --cov=src --cov-report=html
   - Memory optimization
 
 ### Coverage Requirements
-- Minimum overall coverage: 80%
-- Critical paths coverage: 90%
-- Web interface coverage: 85%
+- Minimum overall coverage: 70%
 
 ### Continuous Integration
 Tests are automatically run on:

@@ -1,0 +1,96 @@
+# Define stages for the pipeline
+stages:
+  - test
+  - coverage
+
+# Define variables
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip-cache"
+  PYTEST_ADDOPTS: "--color=yes"
+
+# Cache pip dependencies
+cache:
+  paths:
+    - .pip-cache
+    - venv/
+
+# Base test configuration
+.test_base:
+  image: python:3.8
+  before_script:
+    - python -V
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install pytest pytest-cov
+
+# Run tests on main branch
+test:main:
+  extends: .test_base
+  stage: test
+  script:
+    - pytest tests/ -v
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  tags:
+    - docker
+
+# Run tests on merge requests
+test:merge_request:
+  extends: .test_base
+  stage: test
+  script:
+    - pytest tests/ -v
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  tags:
+    - docker
+
+# Run tests on release tags
+test:release:
+  extends: .test_base
+  stage: test
+  script:
+    - pytest tests/ -v
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+  tags:
+    - docker
+
+# Generate coverage report
+coverage:
+  extends: .test_base
+  stage: coverage
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  script:
+    - pytest --cov=src tests/ --cov-report=term-missing --cov-report=html
+    - coverage report
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+    paths:
+      - htmlcov
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+  tags:
+    - docker
+
+# GPU-specific tests
+test:gpu:
+  extends: .test_base
+  stage: test
+  script:
+    - pytest tests/ -v -m gpu
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+  tags:
+    - gpu
+  variables:
+    CUDA_VISIBLE_DEVICES: "0"
