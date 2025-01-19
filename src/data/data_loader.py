@@ -1,7 +1,6 @@
 from typing import Dict, Tuple, List, Union
 from datasets import load_dataset, Dataset
 from transformers import BartTokenizer
-import torch
 import yaml
 import logging
 from pathlib import Path
@@ -162,6 +161,10 @@ class SummarizationDataset:
         model_inputs["labels"] = labels["input_ids"]
 
         # Replace padding token id in labels with -100
+        # Explanation: When sequences are tokenized, they are padded to a fixed length (max_target_length) for
+        # uniformity in batch processing. These padding tokens do not carry any meaningful information and should not
+        # contribute to the loss computation during training. In  many frameworks (e.g., PyTorch's CrossEntropyLoss),
+        # setting a target token value to -100 ensures that it is ignored during loss computation.
         for i in range(len(model_inputs["labels"])):
             model_inputs["labels"][i] = [
                 -100 if token == self.tokenizer.pad_token_id else token

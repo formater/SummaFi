@@ -1,6 +1,9 @@
-from typing import Dict, Any, Optional
-from pathlib import Path
 import logging
+from pathlib import Path
+
+import torch
+import wandb
+import yaml
 from transformers import (
     Trainer,
     TrainingArguments,
@@ -8,11 +11,8 @@ from transformers import (
     AutoModelForSeq2SeqLM,
     GenerationConfig,
 )
-from datasets import Dataset
-import wandb
+
 from ..data.data_loader import SummarizationDataset
-import torch
-import yaml
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -148,5 +148,3 @@ class SummarizerTrainer:
         except Exception as e:
             logger.error(f"Error during training: {str(e)}")
             raise
-
-    # ... rest of the implementation (training loop, validation, etc.)

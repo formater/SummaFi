@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict
 import evaluate
 import logging
 import yaml
