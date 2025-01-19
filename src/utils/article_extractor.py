@@ -21,6 +21,7 @@ try:
 except Exception as e:
     logger.warning(f"Error downloading NLTK data: {str(e)}")
 
+
 class ArticleExtractor:
     """
     Utility class for extracting articles from URLs.
@@ -28,7 +29,7 @@ class ArticleExtractor:
     This class provides functionality to extract and parse news articles from URLs
     while maintaining GDPR compliance by not storing any data locally.
     """
-    
+
     def __init__(self):
         """Initialize the article extractor."""
         # Verify NLTK data is available
@@ -38,7 +39,7 @@ class ArticleExtractor:
             logger.warning("NLTK data not found, attempting to download...")
             nltk.download('punkt')
             nltk.download('punkt_tab')
-    
+
     @staticmethod
     def extract_article(url: str) -> Dict[str, Optional[str]]:
         """Extract article content and metadata from URL."""
@@ -47,12 +48,12 @@ class ArticleExtractor:
             parsed_url = urlparse(url)
             if not all([parsed_url.scheme, parsed_url.netloc]):
                 raise ValueError("Invalid URL format")
-                
+
             # Initialize and download article
             article = Article(url)
             article.download()
             article.parse()
-            
+
             # Extract text and basic metadata first
             result = {
                 'text': article.text,
@@ -60,7 +61,7 @@ class ArticleExtractor:
                 'authors': article.authors,
                 'publish_date': str(article.publish_date) if article.publish_date else None,
             }
-            
+
             # Try NLP features, but don't fail if they're not available
             try:
                 article.nlp()
@@ -74,13 +75,13 @@ class ArticleExtractor:
                     'keywords': [],
                     'summary': result['text'][:500] + "..."  # Fallback to text truncation
                 })
-            
+
             return result
-            
+
         except Exception as e:
             logger.error(f"Error extracting article from {url}: {str(e)}")
             raise
-            
+
     @staticmethod
     def is_valid_url(url: str) -> bool:
         """
@@ -95,20 +96,21 @@ class ArticleExtractor:
         try:
             if not url or not isinstance(url, str):
                 return False
-            
+
             # Check URL format
             parsed_url = urlparse(url)
             if not all([parsed_url.scheme, parsed_url.netloc]):
                 return False
-            
+
             # Check if scheme is http or https
             if parsed_url.scheme not in ['http', 'https']:
                 return False
-            
+
             return True
-            
+
         except Exception:
             return False
+
 
 class SentimentAnalyzer:
     def analyze(self, text: str) -> Dict[str, float]:

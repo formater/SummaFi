@@ -20,7 +20,7 @@ class SummarizationDataset:
     - Dynamic batching with padding
     - PyTorch format conversion
     """
-    
+
     def __init__(self, config_path: Union[str, Path]) -> None:
         """
         Initialize the dataset handler.
@@ -35,20 +35,20 @@ class SummarizationDataset:
         config_path = Path(config_path)
         if not config_path.exists():
             raise FileNotFoundError(f"Config file not found: {config_path}")
-            
+
         with open(config_path, 'r') as f:
             config = yaml.safe_load(f)
             self.config = config['data']
             self.model_name = config['model']['name']
             self.max_source_length = config['data']['max_source_length']
             self.max_target_length = config['data']['max_target_length']
-            
+
         # Initialize tokenizer with proper settings
         self.tokenizer = BartTokenizer.from_pretrained(
             self.model_name,
             model_max_length=self.max_source_length
         )
-        
+
     def load_dataset(self) -> Tuple[Dataset, Dataset]:
         """
         Load and prepare the CNN/DailyMail dataset.
@@ -67,7 +67,7 @@ class SummarizationDataset:
                 self.config['dataset_name'],
                 self.config['dataset_version']
             )
-            
+
             # Handle dataset splitting
             if 'validation' in dataset:
                 train_dataset = dataset['train']
@@ -78,7 +78,7 @@ class SummarizationDataset:
                 )
                 train_dataset = train_val['train']
                 val_dataset = train_val['test']
-            
+
             # Process datasets
             train_dataset = self._process_dataset(
                 train_dataset,
@@ -88,20 +88,20 @@ class SummarizationDataset:
                 val_dataset,
                 desc="Processing validation data"
             )
-            
+
             logger.info(f"Processed {len(train_dataset)} training examples")
             logger.info(f"Processed {len(val_dataset)} validation examples")
-            
+
             return train_dataset, val_dataset
-            
+
         except Exception as e:
             logger.error(f"Error loading dataset: {str(e)}")
             raise
-            
+
     def _process_dataset(
-        self,
-        dataset: Dataset,
-        desc: str = "Processing dataset"
+            self,
+            dataset: Dataset,
+            desc: str = "Processing dataset"
     ) -> Dataset:
         """
         Process a dataset with tokenization and formatting.
@@ -120,15 +120,15 @@ class SummarizationDataset:
             remove_columns=dataset.column_names,
             desc=desc
         )
-        
+
         # Set format for PyTorch
         processed.set_format(
             type='torch',
             columns=['input_ids', 'attention_mask', 'labels']
         )
-        
+
         return processed
-            
+
     def _preprocess_function(self, examples: Dict[str, List[str]]) -> Dict[str, List[int]]:
         """
         Preprocess examples by tokenizing inputs and targets.
@@ -164,12 +164,12 @@ class SummarizationDataset:
         # Replace padding token id in labels with -100
         for i in range(len(model_inputs["labels"])):
             model_inputs["labels"][i] = [
-                -100 if token == self.tokenizer.pad_token_id else token 
+                -100 if token == self.tokenizer.pad_token_id else token
                 for token in model_inputs["labels"][i]
             ]
-        
+
         return model_inputs
-    
+
     def get_tokenizer(self) -> BartTokenizer:
         """
         Get the tokenizer instance.
