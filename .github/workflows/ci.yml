@@ -38,11 +38,6 @@ jobs:
       run: |
         pytest --cov=src tests/ --cov-report=xml --cov-report=html
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        fail_ci_if_error: true
 
   gpu-tests:
     runs-on: ubuntu-latest

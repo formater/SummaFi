@@ -1,69 +1,72 @@
 # SummaFi - Financial News Summarization System
 
+![Tests status](https://github.com/formater/SummaFi/actions/workflows/ci.yml/badge.svg)
+
 ## Project Overview
-SummaFi is an advanced financial news summarization system built for my BSc final project. It leverages Facebook's BART
-model fine-tuned on the CNN/DailyMail dataset to provide accurate, concise summaries of financial news articles. The
-summarizer achieves ROUGE scores:
+SummaFi is an advanced financial news summarization system designed for my BSc final project. It uses Facebook's BART model fine-tuned on the CNN/DailyMail dataset to deliver concise, accurate summaries of financial news articles. Key metrics achieved by the summarizer:
 
-- Rouge1: 0.4223
-- Rouge2: 0.1935
-- RougeL: 0.2889
-
+- **Rouge1**: 0.4223  
+- **Rouge2**: 0.1935  
+- **RougeL**: 0.2889  
 
 ### Core Features
-- AI-powered text summarization using fine-tuned BART model
-- Automatic article extraction from URLs using newspaper3k
-- Financial sentiment analysis using FinBERT
-- GDPR-compliant processing (no data storage)
-- Interactive web interface using Gradio
-- Comprehensive evaluation using ROUGE metrics
+- **AI-powered summarization** using fine-tuned BART
+- **Article extraction** from URLs with `newspaper3k`
+- **Financial sentiment analysis** using FinBERT
+- **Interactive web interface** built with Gradio
+- **GDPR compliance** with real-time, stateless processing
+- **Evaluation metrics** using ROUGE
+
+---
 
 ## Technical Stack
-- **Base Model**: facebook/bart-base
-- **Dataset**: CNN/DailyMail (3.0.0)
-- **Sentiment Analysis**: ProsusAI/finbert
-- **Framework**: PyTorch, HuggingFace Transformers
-- **Web Interface**: Gradio
-- **Article Extraction**: newspaper3k
-- **Experiment Tracking**: Weights & Biases
-- **Testing**: pytest
+- **Base Model**: facebook/bart-base  
+- **Dataset**: CNN/DailyMail (3.0.0)  
+- **Sentiment Analysis**: ProsusAI/finbert  
+- **Frameworks**: PyTorch, HuggingFace Transformers  
+- **Web Interface**: Gradio  
+- **Experiment Tracking**: Weights & Biases  
+- **Testing Framework**: pytest  
+
+---
 
 ## Installation
 
 ### Prerequisites
-- Python 3.8+
-- CUDA-capable GPU (recommended)
-- 16GB RAM (recommended)
-- Git
+- Python 3.8+ (Python 3.10 recommended)  
+- CUDA-capable GPU (optional but recommended)  
+- At least 16GB RAM  
 
 ### Setup Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/formater/SummaFi.git
+   cd SummaFi
+   ```
 
-1. Clone repository:
-```bash
-git clone https://github.com/formater/SummaFi.git
-cd SummaFi
-```
-
-2. Create virtual environment:
-```bash
-python -m venv .
-source bin/activate  # Windows: Scripts\activate
-```
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   ```
 
 3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install --upgrade pip
+   pip install -r requirements.txt
+   ```
 
-4. Configure Weights & Biases:
-```bash
-wandb login
-```
+4. Configure Weights & Biases (if applicable):
+   ```bash
+   wandb login
+   ```
+
+---
 
 ## Usage
 
 ### Training
-Fine-tune the model:
+Fine-tune the model using:
 ```bash
 python main.py --mode train --config config/config.yaml
 ```
@@ -75,31 +78,35 @@ python main.py --mode evaluate --config config/config.yaml --model-path outputs/
 ```
 
 ### Web Interface
-Launch the Gradio interface:
+Launch the interactive Gradio web interface:
 ```bash
 python main.py --mode serve --model-path outputs/final_model --port 7860
 ```
+
+---
 
 ## Project Structure
 ```
 summa_fi/
 ├── config/
-│   └── config.yaml          # Configuration settings
+│   └── config.yaml          # Configuration file
 ├── src/
-│   ├── data/               # Data processing
-│   ├── models/             # Model architecture
-│   ├── training/           # Training logic
-│   ├── evaluation/         # Evaluation metrics
-│   ├── utils/              # Utilities
-│   └── web/               # Web interface
-├── tests/                  # Test suite
-├── docs/                   # Documentation
-├── requirements.txt        # Dependencies
-└── README.md              # This file
+│   ├── data/                # Data processing utilities
+│   ├── models/              # Model definition and handling
+│   ├── training/            # Training pipeline
+│   ├── evaluation/          # Evaluation utilities
+│   ├── utils/               # Helper functions
+│   └── web/                 # Web interface implementation
+├── tests/                   # Test suite
+├── docs/                    # Documentation
+├── requirements.txt         # Dependencies
+└── README.md                # This file
 ```
 
+---
+
 ## Configuration
-Key configuration sections in `config/config.yaml`:
+Configuration details can be adjusted in `config/config.yaml`.
 
 ### Model Settings
 ```yaml
@@ -119,67 +126,7 @@ training:
   warmup_steps: 500
 ```
 
-## Privacy & Legal Compliance
-
-### GDPR Compliance
-- No personal data storage
-- Real-time processing only
-- No cookies or tracking
-- Transparent data handling
-
-### Copyright Considerations
-- Fair use implementation
-- No article storage
-- Source attribution
-
-## Development Guidelines
-
-### Code Style
-- PEP 8 compliance
-- Type hints (Python 3.8+)
-- Comprehensive docstrings
-- Clean code principles
-
-### Testing
-Run tests:
-```bash
-pytest tests/
-pytest --cov=src tests/  # with coverage
-```
-
-## Troubleshooting
-
-### Common Issues
-1. Memory Issues
-   - Reduce batch size
-   - Enable gradient accumulation
-   - Use mixed precision training
-
-2. URL Access
-   - Verify URL format
-   - Check site accessibility
-
-## Contributing
-1. Fork repository
-2. Create feature branch
-3. Implement changes
-4. Submit pull request
-
-## License
-MIT License - See [LICENSE](LICENSE) file
-
-## Acknowledgments
-- [Facebook AI Research (BART)](https://huggingface.co/docs/transformers/en/model_doc/bart)
-- [HuggingFace Team](https://huggingface.co/)
-- [CNN/DailyMail Dataset](https://paperswithcode.com/dataset/cnn-daily-mail-1)
-- [Gradio Team](https://www.gradio.app/)
-- [FinBERT](https://huggingface.co/ProsusAI/finbert)
-
-## Contact
-- Author: Dudás József
-- Email: [jozsef.dudas@gmail.com](mailto:jozsef.dudas@gmail.com)
-- GitHub: [formater](https://github.com/formater/)
-- LinkedIn: [https://www.linkedin.com/in/dudasjozsef/](https://www.linkedin.com/in/dudasjozsef/)
+---
 
 ## Testing
 
@@ -202,26 +149,73 @@ pytest --cov=src --cov-report=html
 ```
 
 ### Test Categories
-- **Unit Tests**: Individual component testing
-  - Data loading and preprocessing
-  - Model initialization and inference
-  - Article extraction and URL validation
+1. **Unit Tests**: Testing individual components like:
+   - Data loading and preprocessing
+   - Model initialization and inference
+   - URL validation and article extraction  
 
-- **Integration Tests**: Component interaction testing
-  - Complete training pipeline
-  - End-to-end summarization process
-  - Web interface functionality
+2. **Integration Tests**: Ensuring components work together, including:
+   - Complete training pipeline
+   - End-to-end summarization process
+   - Web interface functionality  
 
-- **GPU Tests**: Hardware-specific testing
-  - Model GPU utilization
-  - Mixed precision training
-  - Memory optimization
+3. **GPU Tests**: Testing hardware-specific features:
+   - Model GPU utilization
+   - Mixed precision training
+   - Memory management  
 
-### Coverage Requirements
-- Minimum overall coverage: 70%
 
-### Continuous Integration
-Tests are automatically run on:
-- Every push to main branch
-- Pull request creation
-- Release tag creation
+Please find detailed testing documentation at [docs/testing.md](docs/testing.md).
+
+---
+
+## Privacy & Legal Compliance
+
+### GDPR Compliance
+- No personal data storage  
+- Real-time processing only  
+- No cookies or tracking  
+- Transparent data handling practices  
+
+### Copyright Considerations
+- Articles are processed under fair use principles  
+- No article content is stored  
+- Source attribution provided  
+
+---
+
+## Development Guidelines
+- Code adheres to PEP 8 style guidelines
+- Comprehensive docstrings and type hints
+- Minimum test coverage: 70%
+
+---
+
+## Contributing
+1. Fork the repository  
+2. Create a feature branch  
+3. Implement your changes  
+4. Submit a pull request  
+
+---
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Acknowledgments
+- [Amsterdam.Tech](https://amsterdam.tech/)
+- [Facebook AI Research (BART)](https://huggingface.co/docs/transformers/en/model_doc/bart)  
+- [HuggingFace](https://huggingface.co/)  
+- [CNN/DailyMail Dataset](https://paperswithcode.com/dataset/cnn-daily-mail-1)  
+- [Gradio](https://www.gradio.app/)  
+- [FinBERT](https://huggingface.co/ProsusAI/finbert)  
+
+---
+
+## Contact
+- **Author**: Dudás József  
+- **Email**: [jozsef.dudas@gmail.com](mailto:jozsef.dudas@gmail.com)  
+- **GitHub**: [formater](https://github.com/formater/)  
+- **LinkedIn**: [Dudás József](https://www.linkedin.com/in/dudasjozsef/)
