@@ -1,9 +1,7 @@
-from typing import Dict, Optional, Any
+from typing import Dict, Optional
 from newspaper import Article
 import logging
 from urllib.parse import urlparse
-import requests
-from bs4 import BeautifulSoup
 import nltk
 
 logging.basicConfig(level=logging.INFO)
@@ -112,9 +110,3 @@ class ArticleExtractor:
             return False
 
 
-class SentimentAnalyzer:
-    def analyze(self, text: str) -> Dict[str, float]:
-        """Analyze sentiment of text."""
-        # Add your sentiment analysis logic here
-        # For now, return a neutral sentiment
-        return {"positive": 0.5, "negative": 0.5}

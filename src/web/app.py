@@ -1,11 +1,10 @@
-from typing import Dict, Optional, Tuple, Any
+from typing import Dict, Tuple, Any
 import gradio as gr
 import logging
 from pathlib import Path
 from ..models.summarizer import NewsSummarizer
 from ..utils.article_extractor import ArticleExtractor
 from ..utils.sentiment_analyzer import SentimentAnalyzer
-import yaml
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
