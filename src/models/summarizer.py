@@ -1,6 +1,6 @@
-from typing import Optional, Union
+from typing import Union
 import torch
-from transformers import AutoModelForSeq2SeqLM, BartTokenizer, AutoTokenizer
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from pathlib import Path
 import yaml
 import logging

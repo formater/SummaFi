@@ -190,12 +190,11 @@ pytest
 
 # Run specific test files
 pytest tests/test_data_loader.py
-pytest tests/test_summarizer.py
 pytest tests/test_article_extractor.py
+pytest tests/test_sentiment_analyzer.py
 
 # Run tests by marker
 pytest -m gpu          # Run GPU-specific tests
-pytest -m "not slow"   # Skip slow tests
 pytest -m integration  # Run integration tests
 
 # Run with coverage report

@@ -1,10 +1,11 @@
 import pytest
 from src.utils.article_extractor import ArticleExtractor
 
+
 def test_url_validation():
     """Test URL validation."""
     extractor = ArticleExtractor()
-    
+
     # Test valid URLs
     valid_urls = [
         "https://www.example.com",
@@ -14,7 +15,7 @@ def test_url_validation():
     ]
     for url in valid_urls:
         assert extractor.is_valid_url(url), f"URL should be valid: {url}"
-    
+
     # Test invalid URLs
     invalid_urls = [
         "not_a_url",
@@ -27,10 +28,11 @@ def test_url_validation():
     for url in invalid_urls:
         assert not extractor.is_valid_url(url), f"URL should be invalid: {url}"
 
+
 def test_article_extraction():
     """Test article extraction."""
     extractor = ArticleExtractor()
-    
+
     # Mock article data for testing
     test_url = "https://www.example.com/article"
     test_content = {
@@ -39,7 +41,7 @@ def test_article_extraction():
         'authors': ['Test Author'],
         'publish_date': None,
     }
-    
+
     # Test basic extraction
     try:
         result = extractor.extract_article(test_url)
