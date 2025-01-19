@@ -80,7 +80,7 @@ coverage:
   tags:
     - docker
 
-# GPU-specific tests
+# GPU-specific tests,
 test:gpu:
   extends: .test_base
   stage: test
