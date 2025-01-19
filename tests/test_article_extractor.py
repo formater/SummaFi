@@ -34,7 +34,7 @@ def test_article_extraction():
     extractor = ArticleExtractor()
 
     # Mock article data for testing
-    test_url = "https://www.example.com/article"
+    test_url = "https://finance.yahoo.com/news/the-stock-market-has-never-looked-like-this-before--regardless-of-whos-president-140021170.html"
     test_content = {
         'text': 'Test article content',
         'title': 'Test Article',

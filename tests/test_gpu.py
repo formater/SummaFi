@@ -12,7 +12,8 @@ def test_gpu_availability():
 
 
 @pytest.mark.gpu
-def test_model_to_gpu():
+@pytest.mark.requires_model
+def test_model_to_gpu(check_model):
     """Test if model moves to GPU correctly."""
     config_path = Path("config/config.yaml")
     model = NewsSummarizer(config_path)
@@ -37,7 +38,8 @@ def test_model_to_gpu():
 
 
 @pytest.mark.gpu
-def test_gpu_memory_usage():
+@pytest.mark.requires_model
+def test_gpu_memory_usage(check_model):
     """Test GPU memory usage during processing."""
     if not torch.cuda.is_available():
         pytest.skip("CUDA not available")
@@ -71,7 +73,8 @@ def test_gpu_memory_usage():
 
 
 @pytest.mark.gpu
-def test_batch_processing_on_gpu():
+@pytest.mark.requires_model
+def test_batch_processing_on_gpu(check_model):
     """Test batch processing on GPU."""
     if not torch.cuda.is_available():
         pytest.skip("CUDA not available")

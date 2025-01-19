@@ -2,7 +2,8 @@ import pytest
 from src.utils.sentiment_analyzer import SentimentAnalyzer
 
 
-def test_sentiment_analysis():
+@pytest.mark.requires_model
+def test_sentiment_analysis(check_model):
     """Test sentiment analysis."""
     analyzer = SentimentAnalyzer()
 
