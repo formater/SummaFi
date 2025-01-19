@@ -131,7 +131,6 @@ training:
 - Fair use implementation
 - No article storage
 - Source attribution
-- robots.txt compliance
 
 ## Development Guidelines
 
@@ -159,7 +158,6 @@ pytest --cov=src tests/  # with coverage
 2. URL Access
    - Verify URL format
    - Check site accessibility
-   - Confirm robots.txt compliance
 
 ## Contributing
 1. Fork repository
@@ -171,14 +169,15 @@ pytest --cov=src tests/  # with coverage
 MIT License - See LICENSE file
 
 ## Acknowledgments
-- Facebook AI Research (BART)
-- HuggingFace Team
-- CNN/DailyMail Dataset
-- Gradio Team
+- Facebook AI Research (BART)(https://huggingface.co/docs/transformers/en/model_doc/bart)
+- HuggingFace Team(https://huggingface.co/)
+- CNN/DailyMail Dataset(https://paperswithcode.com/dataset/cnn-daily-mail-1)
+- Gradio Team(https://www.gradio.app/)
+- FinBERT(https://huggingface.co/ProsusAI/finbert)
 
 ## Contact
 - Author: Dudás József
-- Email: jozsef.dudas@gmail.com
+- Email: jozsef.dudas@gmail.com(mailto:jozsef.dudas@gmail.com)
 - GitHub: formater
 
 ## Testing
