@@ -3,186 +3,159 @@
 ## 1. Testing Strategy Overview
 
 ### 1.1 Objectives
-- Validate model accuracy and reliability
-- Ensure data processing pipeline integrity
-- Verify web interface functionality
-- Confirm GDPR compliance
-- Test GPU utilization and memory management
-- Validate sentiment analysis accuracy
+- Validate model accuracy, reliability, and performance.
+- Ensure data processing pipeline integrity and robustness.
+- Verify web interface usability and functionality.
+- Confirm compliance with GDPR requirements.
+- Test GPU utilization and memory management efficiency.
+- Validate the accuracy and reliability of sentiment analysis.
 
 ### 1.2 Testing Tools
-- pytest: Primary testing framework
-- pytest-cov: Code coverage reporting
-- torch.testing: GPU and tensor validation
-- Weights & Biases: Training metrics tracking
+- **pytest**: Primary testing framework.
+- **pytest-cov**: Code coverage reporting.
+- **torch.testing**: GPU and tensor validation.
+- **Weights & Biases (W&B)**: Training metrics and performance tracking.
+
+---
 
 ## 2. Test Plans
 
 ### 2.1 Unit Testing Plan
-Based on implemented tests in `tests/`:
+Focuses on individual module functionality:
 
 #### Data Processing Tests (`test_data_loader.py`)
-- Dataset initialization
-- Data preprocessing validation
-- Batch processing verification
-- Input validation and error handling
-- Data truncation checks
-- Tensor format validation
+- **Scenarios:**
+  - Dataset initialization and configuration validation.
+  - Data preprocessing correctness.
+  - Batch and tensor validation for downstream tasks.
+  - Input truncation and error handling checks.
 
 #### GPU Tests (`test_gpu.py`)
-- GPU availability verification
-- Model GPU memory management
-- Batch processing on GPU
-- Memory cleanup validation
+- **Scenarios:**
+  - GPU availability validation.
+  - Memory allocation and cleanup monitoring.
+  - Batch inference on GPU and efficiency checks.
 
 #### Article Extraction Tests (`test_article_extractor.py`)
-- URL validation
-- Content extraction
-- Error handling for invalid URLs
-- Response format validation
+- **Scenarios:**
+  - URL validation and error handling for invalid inputs.
+  - Content extraction correctness.
+  - Response format verification.
 
 #### Sentiment Analysis Tests (`test_sentiment_analyzer.py`)
-- Positive sentiment detection
-- Negative sentiment detection
-- Probability distribution validation
-- Text chunking verification
+- **Scenarios:**
+  - Positive and negative sentiment detection accuracy.
+  - Probability distribution correctness.
+  - Text chunking and segmentation integrity.
+
+---
 
 ### 2.2 Integration Testing Plan
-[PLACEHOLDER: Need details on integration test implementation]
+Covers interaction between major components:
 
-Current coverage:
-- Training pipeline integration
-- End-to-end summarization process
-- Web interface functionality
+- **Web Interface and Backend Communication**
+  - Verify that user inputs (URLs) are correctly sent and processed.
+  - Ensure summaries are returned and displayed properly.
+  
+- **Backend and NLP Model Integration**
+  - Validate interaction between backend and summarization models.
+  - Ensure outputs are correctly processed and formatted.
+
+- **Error Handling Across Components**
+  - Ensure errors (e.g., invalid URLs or model failures) are propagated and handled gracefully.
+
+---
 
 ### 2.3 System Testing Plan
-Based on project requirements:
+Validates the complete system against requirements:
 
 #### Performance Testing
-- Response time benchmarks
-- Memory usage monitoring
-- GPU utilization tracking
-- Concurrent request handling
+- Measure response times under varying loads.
+- Monitor GPU utilization during batch inference.
+- Evaluate concurrent request handling capabilities.
 
 #### Security Testing
-- URL validation
-- Input sanitization
-- GDPR compliance verification
+- Validate URL inputs and sanitize requests.
+- Ensure compliance with GDPR through non-persistent data handling.
+
+---
 
 ### 2.4 User Acceptance Testing Plan
-[PLACEHOLDER: Need UAT scenarios and acceptance criteria]
+- **Summary Accuracy**
+  - Verify summaries reflect the article's key points, are concise, and ≤25% of the original content length.
+  
+- **Simplified User Interface**
+  - Test user experience for clarity, intuitiveness, and speed.
+
+- **Response Time**
+  - Ensure summarization within acceptable time limits (e.g., ≤5 seconds for articles <1000 words).
+
+- **Error Handling**
+  - Validate proper messaging for invalid or inaccessible URLs.
+
+---
 
 ## 3. Test Cases
 
 ### 3.1 Data Processing Test Cases
-#### Test Case: Dataset Initialization
-
-Input: config_path = "config/config.yaml"
-Expected Output:
-Initialized tokenizer
-Valid max_source_length
-Valid max_target_length
-Actual Result: [PLACEHOLDER]
-
-#### Test Case: Data Preprocessing
-Input:
-Article: "Test article content"
-Highlights: "Test summary"
-Expected Output:
-Dictionary with input_ids, attention_mask, labels
-Proper tensor shapes
-Actual Result: [PLACEHOLDER]
+- **Dataset Initialization**: Validate dataset and tokenizer setup.
+- **Preprocessing**: Ensure correct tensor generation and format.
 
 ### 3.2 GPU Test Cases
-#### Test Case: GPU Memory Management
-Steps:
-Record initial memory
-Load model
-Process test input
-Clean up resources
-Expected Output:
-Memory increases after model load
-Memory properly freed after cleanup
-Actual Result: [PLACEHOLDER]
+- **Memory Management**: Validate memory allocation and cleanup during batch inference.
 
 ### 3.3 Article Extraction Test Cases
-#### Test Case: URL Validation
-Input URLs:
-"https://www.example.com"
-"http://example.com"
-"invalid_url"
-Expected Output:
-Valid URLs return True
-Invalid URLs return False
-Actual Result: [PLACEHOLDER]
+- **URL Validation**: Test valid/invalid URL handling.
 
+---
 
 ## 4. Test Results
 
 ### 4.1 Coverage Report
-[PLACEHOLDER: Add latest coverage metrics]
+```plaintext
+---------- coverage: platform win32, python 3.10.11-final-0 ----------
+Name                              Stmts   Miss  Cover   Missing
+---------------------------------------------------------------
+src\data\data_loader.py              51     14    73%   36, 75-79, 96-98, 145-174, 183
+src\models\summarizer.py             42      7    83%   63, 100-102, 118-120
+src\utils\article_extractor.py       58     15    74%   19-20, 36-39, 48, 70-72, 79-81, 109-110
+src\utils\sentiment_analyzer.py      47     13    72%   59, 74-77, 85-93
+---------------------------------------------------------------
+TOTAL                               198     49    75%
+```
 
-Target Requirements:
-- Minimum overall coverage: 70%
-- Critical paths coverage: TBD
-- Web interface coverage: TBD
+- **Minimum Coverage Target**: 70%
 
-### 4.2 Known Issues
-[PLACEHOLDER: Document current issues and their status]
+---
 
 ## 5. Risk Assessment
 
 ### 5.1 Identified Risks
-
 #### Technical Risks
-1. GPU Memory Management
-   - Risk: Memory leaks during batch processing
-   - Mitigation: Implemented memory tracking and cleanup tests
-   - Status: Monitored via `test_gpu_memory_usage()`
-
-2. Data Processing
-   - Risk: Input truncation affecting summary quality
-   - Mitigation: Truncation tests and validation
-   - Status: Monitored via data loader tests
-
-3. Model Performance
-   - Risk: Slow processing of large articles
-   - Mitigation: Batch processing and GPU optimization
-   - Status: Monitored via GPU tests
+- **GPU Memory Management**: Risk of memory leaks during processing.
+  - **Mitigation**: Implement memory tracking and cleanup tests.
+  
+- **Data Truncation**: Risk of summary quality loss due to improper preprocessing.
+  - **Mitigation**: Validate truncation thresholds during tests.
 
 #### Security Risks
-1. URL Injection
-   - Risk: Malicious URL inputs
-   - Mitigation: URL validation and sanitization
-   - Status: Tested via `test_url_validation()`
+- **URL Injection**: Risk of malicious input exploitation.
+  - **Mitigation**: Enforce strict URL validation and sanitization.
 
-2. GDPR Compliance
-   - Risk: Accidental data storage
-   - Mitigation: Real-time processing, no storage
-   - Status: Verified through system tests
+- **GDPR Compliance**: Risk of unintentional data storage.
+  - **Mitigation**: Ensure non-persistent processing and regular audits.
 
-### 5.2 Risk Mitigation Strategies
-- Comprehensive error handling
-- Regular memory monitoring
-- Input validation and sanitization
-- Automated testing on CI/CD pipeline
+---
 
-## 6. Continuous Integration
+## 6. Test Maintenance
+- Update test cases with new features.
+- Monitor code coverage regularly.
+- Update performance benchmarks as the system evolves.
+- Maintain test data for reproducibility.
 
-### 6.1 Test Automation
-Tests run automatically on:
-- Every push to main branch
-- Pull request creation
-- Release tag creation
+---
 
-### 6.2 Test Environment
-[PLACEHOLDER: Add test environment specifications]
-
-## 7. Test Maintenance
-- Regular updates to test cases
-- Coverage monitoring
-- Performance benchmark updates
-- Test data management
-
-## 8. Future Improvements
- - Automated UI testing
+## 7. Future Improvements
+- Implement automated UI testing.
+- Integrate CI/CD with GitLab for continuous testing.
+- Expand test coverage for edge cases and performance scenarios.
