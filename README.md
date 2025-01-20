@@ -69,6 +69,9 @@ Fine-tune the model using:
 python main.py --mode train --config config/config.yaml
 ```
 
+### Alternative - Download pre-trained model
+Due to file-size limits, the trained model cannot be uploaded to GitHub. If you do not want to train your own model,
+you can download the trained from: https://huggingface.co/formater/summarizer/tree/main
 ### Evaluation
 Evaluate model performance:
 ```bash
