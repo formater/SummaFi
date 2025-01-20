@@ -1,7 +1,5 @@
 # SummaFi - Financial News Summarization System
 
-![Tests status](https://github.com/formater/SummaFi/actions/workflows/ci.yml/badge.svg)
-
 ## Project Overview
 SummaFi is an advanced financial news summarization system designed for my BSc final project. It uses Facebook's BART model fine-tuned on the CNN/DailyMail dataset to deliver concise, accurate summaries of financial news articles. Key metrics achieved by the summarizer:
 
