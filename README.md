@@ -8,12 +8,12 @@ SummaFi is an advanced financial news summarization system designed for my BSc f
 - **RougeL**: 0.2889  
 
 ### Core Features
-- **AI-powered summarization** using fine-tuned BART
+- **AI-powered summarization** using fine-tuned `BART`
 - **Article extraction** from URLs with `newspaper3k`
-- **Financial sentiment analysis** using FinBERT
-- **Interactive web interface** built with Gradio
+- **Financial sentiment analysis** using `FinBERT`
+- **Interactive web interface** built with `Gradio`
 - **GDPR compliance** with real-time, stateless processing
-- **Evaluation metrics** using ROUGE
+- **Evaluation metrics** using ROUGE scores
 
 ---
 
